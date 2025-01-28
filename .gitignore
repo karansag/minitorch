@@ -130,3 +130,7 @@ dmypy.json
 *.\#*
 data/
 pyodide
+
+# Emacs
+*~undo-tree~*
+*~
