@@ -4,6 +4,7 @@ Collection of the core mathematical operators used throughout the code base.
 
 import math
 from typing import Callable, Iterable
+import functools
 
 # ## Task 0.1
 #
@@ -65,7 +66,11 @@ def sigmoid(x: float) -> float:
     for stability.
     """
     # TODO: Implement for Task 0.1.
-    return 1.0 / (1.0 + math.exp(-1.0 * x)) if x >=0 else math.exp(x) / (1.0 + math.exp(x))
+    return (
+        1.0 / (1.0 + math.exp(-1.0 * x))
+        if x >= 0
+        else math.exp(x) / (1.0 + math.exp(x))
+    )
 
 
 def relu(x: float) -> float:
@@ -105,13 +110,13 @@ def inv(x: float) -> float:
 def inv_back(x: float, d: float) -> float:
     r"If $f(x) = 1/x$ compute $d \times f'(x)$"
     # TODO: Implement for Task 0.1.
-    return  -1.0 * d / x**2
+    return -1.0 * d / x**2
 
 
 def relu_back(x: float, d: float) -> float:
     r"If $f = relu$ compute $d \times f'(x)$"
     # TODO: Implement for Task 0.1.
-    return d if x > 0 else 0 
+    return d if x > 0 else 0
 
 
 # ## Task 0.3
@@ -132,14 +137,18 @@ def map(fn: Callable[[float], float]) -> Callable[[Iterable[float]], Iterable[fl
          A function that takes a list, applies `fn` to each element, and returns a
          new list
     """
+
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    def _map(xs: Iterable[float]) -> Iterable[float]:
+        return [fn(x) for x in xs]
+
+    return _map
 
 
 def negList(ls: Iterable[float]) -> Iterable[float]:
     "Use `map` and `neg` to negate each element in `ls`"
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    return map(neg)(ls)
 
 
 def zipWith(
@@ -158,14 +167,18 @@ def zipWith(
          applying fn(x, y) on each pair of elements.
 
     """
+
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    def _zipwith(xs: Iterable[float], ys: Iterable[float]) -> Iterable[float]:
+        return [fn(x, y) for (x, y) in zip(xs, ys)]
+
+    return _zipwith
 
 
 def addLists(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
     "Add the elements of `ls1` and `ls2` using `zipWith` and `add`"
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    return zipWith(add)(ls1, ls2)
 
 
 def reduce(
@@ -183,17 +196,21 @@ def reduce(
          $x_1 \ldots x_n$ and computes the reduction :math:`fn(x_3, fn(x_2,
          fn(x_1, x_0)))`
     """
+
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    def _reduce(xs: Iterable[float]) -> float:
+        return functools.reduce(fn, xs, start)
+
+    return _reduce
 
 
 def sum(ls: Iterable[float]) -> float:
     "Sum up a list using `reduce` and `add`."
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    return reduce(add, 0)(ls)
 
 
 def prod(ls: Iterable[float]) -> float:
     "Product of a list using `reduce` and `mul`."
     # TODO: Implement for Task 0.3.
-    return NotImplementedError('Need to implement for Task 0.3')
+    return reduce(mul, 1)(ls)
