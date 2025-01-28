@@ -1,0 +1,87 @@
+[user]
+	name = Karan Sagar
+	email = ksagar1030@gmail.com
+[core]
+	editor = e
+	excludesfile = /Users/karan/.gitignore_global
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[alias]
+	last = log -1 HEAD
+    recent = !git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname)' | head
+[color]
+    ui = true
+[gui]
+	recentrepo = /Users/karansag/workout_project
+[color]
+	ui = always
+	branch = auto
+	diff = auto
+	interactive = auto
+    status = auto
+[color "branch"]
+        current = yellow reverse
+            local = yellow
+                remote = green
+[color "diff"]
+        meta = yellow bold
+            frag = magenta bold
+                old = red bold
+                    new = green bold
+[color "status"]
+        added = yellow
+            changed = green
+                untracked = cyan
+[color "diff"]
+    whitespace = red reverse
+[alias]
+    st = status
+    ci = commit
+    br = branch
+    co = checkout
+    df = diff
+    lg = log -p
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+    ls = ls-files
+    hist = log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
+    gpus = git push origin
+    gpul = git pull origin
+	switch = !legit switch \"$@\"
+	branches = !legit branches
+	sprout = !legit sprout \"$@\"
+	unpublish = !legit unpublish \"$@\"
+	harvest = !legit harvest \"$@\"
+	sync = !legit sync \"$@\"
+	publish = !legit publish \"$@\"
+	graft = !legit graft \"$@\"
+[difftool "Kaleidoscope"]
+	cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+[mergetool "Kaleidoscope"]
+	cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+	trustExitCode = true
+[diff]
+    tool = Kaleidoscope
+    algorithm=patience
+[difftool]
+	prompt = false
+[mergetool]
+	prompt = false
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[alias]
+    latest = "!sh -c \"git for-each-ref --sort=-committerdate refs/heads/ --format='%(committerdate:short) %(authorname) %(refname:short)' | head -n $1\" -"
+[branch]
+	autoSetupMerge = always
+[url "ssh://git@heroku.com/"]
+	insteadOf = https://git.heroku.com/
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
