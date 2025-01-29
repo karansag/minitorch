@@ -61,13 +61,15 @@ class Module:
         sub_params = []
         for k, m in self._modules.items():
             p = m.named_parameters()
-            updated = dict(zip([f"{k}.{x}" for x in p.keys()], p.values()))
+            names = [x[0] for x in p]
+            params = [x[1] for x in p]
+            updated = dict(zip([f"{k}.{x}" for x in names], params))
             sub_params.append(updated)
 
         merged = {**self._parameters}
         for param_dict in sub_params:
             merged.update(param_dict)
-        return merged
+        return merged.items()
 
     def parameters(self) -> Sequence[Parameter]:
         "Enumerate over all the parameters of this module and its descendents."
