@@ -152,7 +152,7 @@ def negList(ls: Iterable[float]) -> Iterable[float]:
 
 
 def zipWith(
-    fn: Callable[[float, float], float]
+    fn: Callable[[float, float], float],
 ) -> Callable[[Iterable[float], Iterable[float]], Iterable[float]]:
     """
     Higher-order zipwith (or map2).
