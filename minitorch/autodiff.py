@@ -56,7 +56,6 @@ class Variable(Protocol):
 def topological_sort(variable: Variable) -> Iterable[Variable]:
     """
     Computes the topological order of the computation graph.
-
     Args:
         variable: The right-most variable
 
@@ -78,7 +77,7 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     for n in order:
         setattr(n, "visited", False)
 
-    return reversed(order)
+    return list(reversed(order))
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -92,8 +91,18 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
 
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    node_order = topological_sort(variable)
+    derivatives = {}
+    for node in node_order:
+        if not node.is_leaf():
+            d_input = derivatives.get(node.unique_id, deriv)
+            outputs = node.chain_rule(d_input)
+            for var, deriv in outputs:
+                derivatives[var.unique_id] = deriv + derivatives.get(var.unique_id, 0)
+
+    for node in node_order:
+        if node.is_leaf():
+            node.accumulate_derivative(derivatives[node.unique_id])
 
 
 @dataclass
