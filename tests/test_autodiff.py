@@ -4,6 +4,7 @@ import pytest
 
 import minitorch
 from minitorch import Context, ScalarFunction, ScalarHistory
+from minitorch.autodiff import topological_sort
 
 # ## Task 1.3 - Tests for the autodifferentiation machinery.
 
@@ -99,6 +100,26 @@ def test_chain_rule4() -> None:
 # ## Task 1.4 - Run some simple backprop tests
 
 # Main tests are in test_scalar.py
+
+
+@pytest.mark.task1_4_1
+def test_topological_sort() -> None:
+    """Simple topological sort test. Added by @karansag"""
+    x = minitorch.Scalar(10)
+    y = minitorch.Scalar(5)
+    z = x + y
+    out = list(topological_sort(z))
+    assert out[0] is z
+    assert (out[1] is y and out[2] is x) or (out[1] is x and out[2] is y)
+
+
+@pytest.mark.task1_4
+def test_backprop1() -> None:
+    # Example 1: F1(0, v)
+    var = minitorch.Scalar(0)
+    var2 = Function1.apply(0, var)
+    var2.backward(d_output=5)
+    assert var.derivative == 5
 
 
 @pytest.mark.task1_4

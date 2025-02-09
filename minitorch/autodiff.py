@@ -63,8 +63,22 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
     Returns:
         Non-constant Variables in topological order starting from the right.
     """
-    # TODO: Implement for Task 1.4.
-    raise NotImplementedError("Need to implement for Task 1.4")
+    order = []
+
+    def visit(v: Variable):
+        if getattr(v, "visited", False):
+            return
+        else:
+            for p in v.parents:
+                visit(p)
+            v.visited = True
+            order.append(v)
+
+    visit(variable)
+    for n in order:
+        setattr(n, "visited", False)
+
+    return reversed(order)
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
