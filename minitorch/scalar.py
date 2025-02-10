@@ -164,6 +164,7 @@ class Scalar:
         assert h.ctx is not None
 
         derivs = h.last_fn.backward(h.ctx, d_output)
+        derivs = (derivs,) if isinstance(derivs, float) else derivs
         return zip(h.inputs, derivs)
 
     def backward(self, d_output: Optional[float] = None) -> None:
