@@ -87,7 +87,7 @@ EPS = 1e-6
 
 def log(x: float) -> float:
     "$f(x) = log(x)$"
-    return math.log(x + EPS)
+    return math.log(max(x, EPS))
 
 
 def exp(x: float) -> float:
