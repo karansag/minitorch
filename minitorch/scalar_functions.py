@@ -49,7 +49,9 @@ class ScalarFunction:
         raw_vals = []
         scalars = []
         for v in vals:
-            if isinstance(v, minitorch.scalar.Scalar):
+            if isinstance(v, minitorch.scalar.Scalar) or isinstance(
+                v, minitorch.Scalar
+            ):
                 scalars.append(v)
                 raw_vals.append(v.data)
             else:
