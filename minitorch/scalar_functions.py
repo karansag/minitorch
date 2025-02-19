@@ -203,3 +203,19 @@ class EQ(ScalarFunction):
     @staticmethod
     def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
         return (0.0, 0.0)
+
+
+class Pow(ScalarFunction):
+    "Power function"
+
+    @staticmethod
+    def forward(ctx: Context, a: float, b: float) -> float:
+        ctx.save_for_backward(a, b)
+        return operators.pow(a, b)
+
+    @staticmethod
+    def backward(ctx: Context, d_output: float) -> Tuple[float, float]:
+        (a, b) = ctx.saved_values
+        return d_output * b * operators.pow(a, b - 1), d_output * operators.log(
+            a
+        ) * operators.pow(a, b)

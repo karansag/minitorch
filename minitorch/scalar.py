@@ -15,6 +15,7 @@ from .scalar_functions import (
     Log,
     Mul,
     Neg,
+    Pow,
     ReLU,
     ScalarFunction,
     Sigmoid,
@@ -123,6 +124,9 @@ class Scalar:
 
     def exp(self) -> Scalar:
         return Exp.apply(self)
+
+    def __pow__(self, b: ScalarLike) -> Scalar:
+        return Pow.apply(self, b)
 
     def sigmoid(self) -> Scalar:
         return Sigmoid.apply(self)
