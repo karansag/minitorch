@@ -81,7 +81,7 @@ class ScalarTrain:
             optim.zero_grad()
 
             # Forward
-            loss = 0
+            batch_loss = minitorch.Scalar(0.0)
             for i in range(data.N):
                 x_1, x_2 = data.X[i]
                 y = data.y[i]
@@ -89,16 +89,20 @@ class ScalarTrain:
                 x_2 = minitorch.Scalar(x_2)
                 out = self.model.forward((x_1, x_2))
 
+                # Binary cross-entropy calculation
                 if y == 1:
                     prob = out
                     correct += 1 if out.data > 0.5 else 0
                 else:
-                    prob = -out + 1.0
+                    prob = -out +  1.0 
                     correct += 1 if out.data < 0.5 else 0
-                loss = -prob.log()
-                (loss / data.N).backward()
-                total_loss += loss.data
 
+                # Accumulate loss without backward
+                batch_loss = batch_loss + (-prob.log())
+                total_loss += (-prob.log()).data
+
+            # Single backward pass for the entire batch
+            (batch_loss / data.N).backward()
             losses.append(total_loss)
 
             # Update
@@ -112,6 +116,6 @@ class ScalarTrain:
 if __name__ == "__main__":
     PTS = 50
     HIDDEN = 2
-    RATE = 0.5
+    RATE = 1
     data = minitorch.datasets["Simple"](PTS)
     ScalarTrain(HIDDEN).train(data, RATE)

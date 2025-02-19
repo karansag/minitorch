@@ -5,7 +5,7 @@ from mnist import MNIST
 import minitorch
 
 vis = visdom.Visdom()
-mndata = MNIST("data/")
+mndata = MNIST("/Users/karansag/repos/minitorch/python-mnist/data")
 images, labels = mndata.load_training()
 
 
